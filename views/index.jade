@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div.container
+    div.jumbotron.cu-red
+        h1= title
+    p Welcome to #{title}
+
+    br
+    each item in posts
+      p
+        | this is the start of the para
+        a(href='http://example.com;') a link
+        |  and this is the rest of the paragraph
+      h3 !{item.excerpt.rendered}
+      br
+      p !{item.content.rendered}
+    
