@@ -132,19 +132,19 @@ router.get('/event/:eventId', function(req, res, next){
 });
 
 /* testing */
-router.post('/payload',function(req, res, next){
-  console.log("payload HIT");
-  debugger;
-  if(req.headers['x-github-event'] == 'push'){
-    console.log("IT'S A PUSH!");
-  }
-  res.send("OK, keep working.");
-});
-
-router.post('/',function(req, res, next){
-  console.log("root HIT");
-  res.send("OK");
-});
+// router.post('/payload',function(req, res, next){
+//   console.log("payload HIT");
+//   debugger;
+//   if(req.headers['x-github-event'] == 'push'){
+//     console.log("IT'S A PUSH!");
+//   }
+//   res.send("OK, keep working.");
+// });
+//
+// router.post('/',function(req, res, next){
+//   console.log("root HIT");
+//   res.send("OK");
+// });
 /* testing */
 
 
