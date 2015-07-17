@@ -78,16 +78,19 @@ var connectDB = function(){
     else {
       //set the working collection
       eventPostsCollection = db.collection('event_posts');
-
     }
   });
 };
 
 connectDB();
 
+router.get('/', function(req,res,next){
+  res.redirect('/page');
+});
+
 /* GET posts page. */
 router.get('/page/:pageIndex', function(req, res, next) {
-  var index = req.params.pageIndex;
+  var index = req.params.pageIndex == undefined ? 1 : req.params.pageIndex //TEST THIS!;
   console.log(index);
   wp.posts().filter({'posts_per_page':10,'status':'publish'}).page(index).get(function( err, data ) {
     if (err) {

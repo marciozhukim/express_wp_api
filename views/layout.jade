@@ -2,12 +2,18 @@ doctype html
 html
   head
     title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='/stylesheets/bootstrap-theme.min.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/clean-blog.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
-
+    include header.jade
+    
+    div.container
+      block content
+  
+    include footer.jade
+    
   script(src='/javascripts/bootstrap.min.js')
   script(src='/javascripts/clean-blog.min.js')
