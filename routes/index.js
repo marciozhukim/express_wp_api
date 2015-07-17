@@ -66,9 +66,6 @@ router.use(function(req, res, next) {
 var wp = new WP(
   {
     endpoint: 'https://ccs-cmsdev1.carleton.ca/students/wp-json/',
-    //dev only, basic authentication
-    username: 'ccms_admin',
-    password: '2850708!'
   });
 
 
