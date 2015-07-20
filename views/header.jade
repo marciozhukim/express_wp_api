@@ -1,0 +1,12 @@
+header(style="background-image: url('/images/banner-propsective.jpg')").intro-header
+  div.container
+    div.row
+      div.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+        div.site-heading
+          if typeof( post ) !== 'undefined'
+            h1!= post.title
+          else
+            a(href="/", style="color:#fff;")
+              h1!= title
+          hr.small
+          span.subheading!= subtitle

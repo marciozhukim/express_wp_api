@@ -1,23 +1,23 @@
 doctype html
 html
   head
-    title= title
+    title!= title
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='/stylesheets/bootstrap-theme.min.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/clean-blog.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+  
+  body(role='document')
     
     include nav.jade
     
     include header.jade
     
-    div.container
+    div.container(role='main')
       block content
   
     include footer.jade
-
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
   script(src='/javascripts/bootstrap.min.js')
   script(src='/javascripts/clean-blog.min.js')

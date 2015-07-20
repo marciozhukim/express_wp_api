@@ -1,1 +1,14 @@
 // this file loops over the posts from the page
+
+div.post-preview
+  div.row
+    
+    div.col-lg-5.col.md-5
+      img(src='http://placehold.it/300x150')
+    
+    div.col-lg-7.col-md-7
+      a(href='/')
+        h2.post-title!= post.title
+      div.post-excerpt!= post.excerpt
+
+hr
