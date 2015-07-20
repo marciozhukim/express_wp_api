@@ -85,18 +85,23 @@ var connectDB = function(){
 connectDB();
 
 router.get('/', function(req,res,next){
-  res.redirect('/page');
+  res.redirect('/page/1');
 });
 
 /* GET posts page. */
 router.get('/page/:pageIndex', function(req, res, next) {
-  var index = req.params.pageIndex == undefined ? 1 : req.params.pageIndex //TEST THIS!;
+  var index = req.params.pageIndex;
   console.log(index);
   wp.posts().filter({'posts_per_page':10,'status':'publish'}).page(index).get(function( err, data ) {
     if (err) {
       console.log(err);
     }
-    res.json({posts:data});
+    // res.json({posts:data});
+    res.render('page', {
+      posts: data,
+      title: 'Carleton University',
+      page: index
+    });
   });
 });
 
