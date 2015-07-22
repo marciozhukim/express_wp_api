@@ -3,7 +3,7 @@ var WP = require( 'wordpress-rest-api' );
 var mongoClient = require('mongodb').MongoClient;
 var CronJob = require('cron').CronJob;
 var router = express.Router();
-
+var moment = require("moment");
 var updateEvents = function(){
   console.log("Job called");
   wp.posts().type('cu-events').filter(
@@ -97,7 +97,7 @@ router.get('/page/:pageIndex', function(req, res, next) {
       console.log(err);
     }
     // res.json({posts:data});
-    res.render('page', {
+    res.render('post-page', {
       posts: data,
       title: 'Carleton University',
       page: index
@@ -113,9 +113,27 @@ router.get('/posts/:postId', function(req, res, next){
     if(err){
       console.log(err);
     }
-    console.log(data);
-    debugger;
-    res.json({post:data});
+
+    eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
+      console.log(event_arr);
+      res.render("events-page", {
+        events: event_arr,
+        posts: data, 
+        title: 'Carleton University'
+      })
+    });
+  });
+});
+
+router.get('/events/',function(req,res,next){
+  var date = moment().format('YYYYMMDD');
+
+  eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
+    console.log(event_arr);
+    res.render("events-page", {
+      posts: event_arr,
+      title: 'Carleton University'
+    })
   });
 });
 
@@ -134,7 +152,7 @@ router.get('/events/:date', function(req, res, next){
 router.get('/event/:eventId', function(req, res, next){
   var id = req.params.eventID;
 
-  eventPostsCollection.find({"ID": id}).toArray(function(err,event_item){
+  eventPostsCollection.find({"ID": id}).limit(10).toArray(function(err,event_item){
     res.json({eventItem:event_item});
   });
 });

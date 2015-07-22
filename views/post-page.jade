@@ -1,0 +1,14 @@
+//this template represents the page of posts 
+extends layout
+
+block content
+  div.container
+    div.row
+      //- div.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+      div.col-lg-9
+        each post in posts
+          include post-loop.jade
+        include pagination.jade
+      div.col-lg-3.hidden-md.hidden-sm.hidden-xs
+        include upcoming-events.jade
+    
