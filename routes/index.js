@@ -3,39 +3,39 @@ var WP = require( 'wordpress-rest-api' );
 var mongoClient = require('mongodb').MongoClient;
 var CronJob = require('cron').CronJob;
 var router = express.Router();
-<<<<<<< HEAD
 
-// var updateEvents = function(){
-//   console.log("Job called");
-//   wp.posts().type('cu-events').filter(
-//     {
-//       posts_per_page: 1,
-//       orderby: "modified",
-//       order: "DESC"
-//     }).get(function(err,data){
-//       eventPostsCollection.find().sort({modified:-1}).limit(1).toArray(function(err,res){
-//         if(res.length === 0 || res.modified != data.modified){
-//           console.log("found diff");
-//           eventPostsCollection.drop();
-//           wp.posts().type('cu-events').filter('posts_per_page', -1).get(function(err,arr){
-//             for (var i = 0; i < arr.length; i++) {
-//               var obj = {};
-//               obj.ID = arr[i].ID;
-//               obj.acf = arr[i].acf;
-//               obj.title = arr[i].title;
-//               obj.modified = arr[i].modified;
-//               console.log('added -' +  obj);
-//               eventPostsCollection.insert(obj);
-//             }
-//           });
-//         }
-//         else {
-//           console.log("match");
-//         }
-//     });
-//   });
-// };
-=======
+
+var updateEvents = function(){
+  console.log("Job called");
+  wp.posts().type('cu-events').filter(
+    {
+      posts_per_page: 1,
+      orderby: "modified",
+      order: "DESC"
+    }).get(function(err,data){
+      eventPostsCollection.find().sort({modified:-1}).limit(1).toArray(function(err,res){
+        if(res.length === 0 || res.modified != data.modified){
+          console.log("found diff");
+          eventPostsCollection.drop();
+          wp.posts().type('cu-events').filter('posts_per_page', -1).get(function(err,arr){
+            for (var i = 0; i < arr.length; i++) {
+              var obj = {};
+              obj.ID = arr[i].ID;
+              obj.acf = arr[i].acf;
+              obj.title = arr[i].title;
+              obj.modified = arr[i].modified;
+              console.log('added -' +  obj);
+              eventPostsCollection.insert(obj);
+            }
+          });
+        }
+        else {
+          console.log("match");
+        }
+    });
+  });
+};
+
 var moment = require("moment");
 var updateEvents = function(){
   console.log("Job called");
@@ -67,16 +67,16 @@ var updateEvents = function(){
     });
   });
 };
->>>>>>> 57e7be5f4a240a2bcb789c2ab3819ca75a95c6c8
+
 
 //creates job to be run at 10:30 and 23:30
- // var job = new CronJob('00 30 10,23 * * *',
- //                      updateEvents,
- //                      function(){
- //                          console.log("updateEvents job executed");
- //                        },
- //                      false,
- //                      'America/Toronto');
+var job = new CronJob('00 30 10,23 * * *',
+                    updateEvents,
+                    function(){
+                        console.log("updateEvents job executed");
+                      },
+                    false,
+                    'America/Toronto');
 
 //*********Settings
 
@@ -151,7 +151,7 @@ router.get('/posts/:postId', function(req, res, next){
       console.log(event_arr);
       res.render("events-page", {
         events: event_arr,
-        posts: data, 
+        posts: data,
         title: 'Carleton University'
       })
     });
