@@ -171,16 +171,16 @@ router.get('/events/',function(req,res,next){
 });
 
 /* GET events*/
-router.get('/events/:date', function(req, res, next){
-
-  var searchDate = req.params.date;
-
-  //match the beginning of the string
-  var regex = new RegExp("^"+ searchDate + "");
-  eventPostsCollection.find({"acf.stu_event_date" : regex }).toArray(function(err,event_arr){
-    res.json({events:event_arr});
-  });
-});
+// router.get('/events/:date', function(req, res, next){
+//
+//   var searchDate = req.params.date;
+//
+//   //match the beginning of the string
+//   var regex = new RegExp("^"+ searchDate + "");
+//   eventPostsCollection.find({"acf.stu_event_date" : regex }).toArray(function(err,event_arr){
+//     res.json({events:event_arr});
+//   });
+// });
 
 router.get('/event/:eventId', function(req, res, next){
   var id = req.params.eventID;
