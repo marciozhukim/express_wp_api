@@ -3,6 +3,7 @@ var WP = require( 'wordpress-rest-api' );
 var mongoClient = require('mongodb').MongoClient;
 var CronJob = require('cron').CronJob;
 var router = express.Router();
+<<<<<<< HEAD
 
 // var updateEvents = function(){
 //   console.log("Job called");
@@ -34,6 +35,39 @@ var router = express.Router();
 //     });
 //   });
 // };
+=======
+var moment = require("moment");
+var updateEvents = function(){
+  console.log("Job called");
+  wp.posts().type('cu-events').filter(
+    {
+      posts_per_page: 1,
+      orderby: "modified",
+      order: "DESC"
+    }).get(function(err,data){
+      eventPostsCollection.find().sort({modified:-1}).limit(1).toArray(function(err,res){
+        if(res.length === 0 || res.modified != data.modified){
+          console.log("found diff");
+          eventPostsCollection.drop();
+          wp.posts().type('cu-events').filter('posts_per_page', -1).get(function(err,arr){
+            for (var i = 0; i < arr.length; i++) {
+              var obj = {};
+              obj.ID = arr[i].ID;
+              obj.acf = arr[i].acf;
+              obj.title = arr[i].title;
+              obj.modified = arr[i].modified;
+              console.log('added -' +  obj);
+              eventPostsCollection.insert(obj);
+            }
+          });
+        }
+        else {
+          console.log("match");
+        }
+    });
+  });
+};
+>>>>>>> 57e7be5f4a240a2bcb789c2ab3819ca75a95c6c8
 
 //creates job to be run at 10:30 and 23:30
  // var job = new CronJob('00 30 10,23 * * *',
@@ -65,9 +99,6 @@ router.use(function(req, res, next) {
 var wp = new WP(
   {
     endpoint: 'https://ccs-cmsdev1.carleton.ca/students/wp-json/',
-    //dev only, basic authentication
-    username: 'ccms_admin',
-    password: '2850708!'
   });
 
 
@@ -80,12 +111,15 @@ var connectDB = function(){
     else {
       //set the working collection
       eventPostsCollection = db.collection('event_posts');
-
     }
   });
 };
 
 connectDB();
+
+router.get('/', function(req,res,next){
+  res.redirect('/page/1');
+});
 
 /* GET posts page. */
 router.get('/page/:pageIndex', function(req, res, next) {
@@ -95,7 +129,12 @@ router.get('/page/:pageIndex', function(req, res, next) {
     if (err) {
       console.log(err);
     }
-    res.json({posts:data});
+    // res.json({posts:data});
+    res.render('post-page', {
+      posts: data,
+      title: 'Carleton University',
+      page: index
+    });
   });
 });
 
@@ -107,9 +146,27 @@ router.get('/posts/:postId', function(req, res, next){
     if(err){
       console.log(err);
     }
-    console.log(data);
-    debugger;
-    res.json({post:data});
+
+    eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
+      console.log(event_arr);
+      res.render("events-page", {
+        events: event_arr,
+        posts: data, 
+        title: 'Carleton University'
+      })
+    });
+  });
+});
+
+router.get('/events/',function(req,res,next){
+  var date = moment().format('YYYYMMDD');
+
+  eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
+    console.log(event_arr);
+    res.render("events-page", {
+      posts: event_arr,
+      title: 'Carleton University'
+    })
   });
 });
 
@@ -128,25 +185,25 @@ router.get('/events/:date', function(req, res, next){
 router.get('/event/:eventId', function(req, res, next){
   var id = req.params.eventID;
 
-  eventPostsCollection.find({"ID": id}).toArray(function(err,event_item){
+  eventPostsCollection.find({"ID": id}).limit(10).toArray(function(err,event_item){
     res.json({eventItem:event_item});
   });
 });
 
 /* testing */
-router.post('/payload',function(req, res, next){
-  console.log("payload HIT");
-  debugger;
-  if(req.headers['x-github-event'] == 'push'){
-    console.log("IT'S A PUSH!");
-  }
-  res.send("OK, keep working.");
-});
-
-router.post('/',function(req, res, next){
-  console.log("root HIT");
-  res.send("OK");
-});
+// router.post('/payload',function(req, res, next){
+//   console.log("payload HIT");
+//   debugger;
+//   if(req.headers['x-github-event'] == 'push'){
+//     console.log("IT'S A PUSH!");
+//   }
+//   res.send("OK, keep working.");
+// });
+//
+// router.post('/',function(req, res, next){
+//   console.log("root HIT");
+//   res.send("OK");
+// });
 /* testing */
 
 
