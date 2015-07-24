@@ -133,7 +133,8 @@ router.get('/page/:pageIndex', function(req, res, next) {
     res.render('post-page', {
       posts: data,
       title: 'Carleton University',
-      page: index
+      page: index,
+      subtitle: "I learned very early the life lesson that it is people, not buildings, that make up an institution. And if we put our hearts to it we can do something worthwhile. - Henry Marshall Tory"
     });
   });
 });
