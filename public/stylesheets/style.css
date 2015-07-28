@@ -11,6 +11,15 @@
 .text:hover{
   text-decoration: underline;
 }
-.padded{
+.v-padded{
   margin: 10px 0px;
+}
+.h-padded{
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.vertical-line{
+  border-left: medium solid #cf112d;
+  margin: 0px 30px;
+  padding-left: 15px;
 }

@@ -1,3 +1,14 @@
 extends layout
 
 block content
+  div.container
+    div.row
+      div.col-lg-9
+        div.post-excerpt.h-padded!= post.content      
+        
+          - var time = moment(post.date).format('MMMM Do YYYY, [at] h:mm');
+
+          p.post-meta.text-muted.small= 'Posted by ' + post.author.name + ' on ' + time
+          hr
+      div.col-lg-3.hidden-md.hidden-sm.hidden-xs
+        include events-sidebar

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  div.container
+    div.row
+      div.col-lg-9
+        div.post-excerpt.h-padded!= post.content      
+        
+          - var time = moment(post.date).format('MMMM Do YYYY, [at] h:mm');
+
+        
+          h2 Summary
+          div.vertical-line
+            
+            p.v-padded Time: 
+              if post.acf.stu_event_all_day==="yes"
+                span All day
+                
+              else
+                span=post.acf.stu_event_start_time
+                span  ~ 
+                span=post.acf.stu_event_end_time
+          
+            p.v-padded Location : 
+              span= post.acf.stu_event_location
+            
+          p.post-meta.text-muted.small= 'Posted by ' + post.author.name + ' on ' + time
+          hr
+      div.col-lg-3.hidden-md.hidden-sm.hidden-xs
+        include events-sidebar

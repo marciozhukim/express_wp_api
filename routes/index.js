@@ -133,7 +133,6 @@ router.get('/page/:pageIndex', function(req, res, next) {
 
     // eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
     eventPostsCollection.find().limit(5).toArray(function(err, event_arr){
-      debugger;
       res.render('post-page', {
         posts: data,
         events: event_arr,
@@ -146,17 +145,20 @@ router.get('/page/:pageIndex', function(req, res, next) {
 });
 
 /* GET specific post*/
-router.get('/posts/:postId', function(req, res, next){
+router.get('/post/:postId', function(req, res, next){
   var id = req.params.postId;
 
   wp.posts().id(id).get(function(err,data){
     if(err){
       console.log(err);
     }
-    res.render("events-page", {
-      events: event_arr,
-      posts: data,
-      title: 'Carleton University'
+    eventPostsCollection.find().limit(5).toArray(function(err, event_arr){
+      res.render("post", {
+        post: data,
+        subtitle: data.excerpt,
+        events: event_arr,
+        title: 'Carleton University'
+      });
     });
   });
 });
@@ -186,10 +188,20 @@ router.get('/events/',function(req,res,next){
 // });
 
 router.get('/event/:eventId', function(req, res, next){
-  var id = req.params.eventID;
+  var id = req.params.eventId;
 
-  eventPostsCollection.find({"ID": id}).toArray(function(err,event_item){
-    res.json({eventItem:event_item});
+  wp.posts().id(id).get(function(err,data){
+    if(err){
+      console.log(err);
+    }
+    eventPostsCollection.find().limit(5).toArray(function(err, event_arr){
+      res.render("event", {
+        post: data,
+        subtitle: data.excerpt,
+        events: event_arr,
+        title: 'Carleton University'
+      });
+    });
   });
 });
 
