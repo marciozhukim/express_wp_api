@@ -5,3 +5,12 @@
   text-align: center;
   color: #fff;
 }
+.text{
+  color: #cf112d;
+}
+.text:hover{
+  text-decoration: underline;
+}
+.padded{
+  margin: 10px 0px;
+}

@@ -1,3 +1,8 @@
-h5 Upcoming Events
-  //- each event in events
-  //-   h6 event
+h5 UPCOMING EVENTS
+  hr
+  each event in events
+    -var date = moment(event.acf.stu_event_date, "YYYYMMDD").format("MM Do YYYY");
+    p.text-muted.small.padded=date
+    a(href="/event/" + event.ID)
+      h5.text=event.title
+hr

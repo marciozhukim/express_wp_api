@@ -130,11 +130,17 @@ router.get('/page/:pageIndex', function(req, res, next) {
       console.log(err);
     }
     // res.json({posts:data});
-    res.render('post-page', {
-      posts: data,
-      title: 'Carleton University',
-      page: index,
-      subtitle: "I learned very early the life lesson that it is people, not buildings, that make up an institution. And if we put our hearts to it we can do something worthwhile. - Henry Marshall Tory"
+
+    // eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
+    eventPostsCollection.find().limit(5).toArray(function(err, event_arr){
+      debugger;
+      res.render('post-page', {
+        posts: data,
+        events: event_arr,
+        title: 'Carleton University',
+        page: index,
+        subtitle: "I learned very early the life lesson that it is people, not buildings, that make up an institution. And if we put our hearts to it we can do something worthwhile. - Henry Marshall Tory"
+      });
     });
   });
 });
@@ -147,14 +153,10 @@ router.get('/posts/:postId', function(req, res, next){
     if(err){
       console.log(err);
     }
-
-    eventPostsCollection.find({"acf.stu_event_date": { $gt:date }}).toArray(function(err, event_arr){
-      console.log(event_arr);
-      res.render("events-page", {
-        events: event_arr,
-        posts: data,
-        title: 'Carleton University'
-      })
+    res.render("events-page", {
+      events: event_arr,
+      posts: data,
+      title: 'Carleton University'
     });
   });
 });
@@ -186,10 +188,11 @@ router.get('/events/',function(req,res,next){
 router.get('/event/:eventId', function(req, res, next){
   var id = req.params.eventID;
 
-  eventPostsCollection.find({"ID": id}).limit(10).toArray(function(err,event_item){
+  eventPostsCollection.find({"ID": id}).toArray(function(err,event_item){
     res.json({eventItem:event_item});
   });
 });
+
 
 /* testing */
 // router.post('/payload',function(req, res, next){

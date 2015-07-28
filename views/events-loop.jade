@@ -2,7 +2,7 @@
 
 div.post-preview
   div.row
-    a(href='/')
+    a(href='/event/' + post.ID)
       h2.post-title!= post.title
     div.post-excerpt!= post.excerpt
     //- - var time = moment(post.date).format('MMMM Do YYYY, [at] h:mm');
